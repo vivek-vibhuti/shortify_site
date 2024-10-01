@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shortify</title>
+    <link rel="stylesheet" href="output.css" />
+   
+   
+
+<body class="font-light bg-violet-100 hover:bg-blend-soft-ligh">
+    <div>
+        <header>
+            <div>
+                <p class="flex items-center justify-center font-mono shadow shadow-violet-500 content-evenly">
+                    Grab The Deal 50% DISCOUNT ON NOTES
+                </p>
+            </div>
+            <nav class="flex h-12 align-middle">
+                <div class="w-8 px-2 mt-3 float-end size-18"><i class="fa-solid fa-bars"></i></div>
+                <span class="float-left text-3xl font-bold">shortify</span>
+                <div class="px-10 mt-3 space-x-10 tex-xl">
+                    <a href="#">features</a>
+                    <a href="#">resources</a>
+                    <a href="#">pricing</a>
+                    
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div class="flex float-right">
+                <img src="illustration-working (1).svg" alt="Illustration of working">
+            </div>
+            <h1 class="px-10 text-3xl font-bold text-violet-400">Hey! Welcome Buddy!</h1>
+            <div class="px-10 mt h-96 content-evenly ">
+                
+                    <form id="urlForm" class="text-black" onsubmit="return false;">
+                        <h1 class="py-10 text-3xl font-bold text-violet-300">Enter your link here</h1>
+                        <input id="urlInput" class="block w-full h-12 px-2 mb-2 text-xl font-medium text-gray-900" type="url" placeholder="Enter URL here" aria-label="URL input" required>
+                        <input id="shortenBtn" class="float-right px-10 py-3 text-2xl bg-violet-200 rounded-3xl" type="button" value="Shorten" aria-label="Shorten URL button">
+                    </form>
+                    
+        
+                
+                <div id="output" class="mt-20 px-10 py-10 bg-[#e6e6ff] border-[#ccc] rounded-md w-64 text-center" style="display:none;"></div>
+            </div>
+        </main>
+        <footer>
+            <div class="w-auto bg-violet-200 h-96">
+              
+                <img class="delay-500 size-full hover:translate-y-5 t" src="bg-shorten-desktop (1).svg" alt="png">
+            </div>
+            <div class="h-10 mix-blend-overlay"></div>
+                <div class="py-10 text-white bg-gray-800">
+                    <div class="container px-6 mx-auto">
+                      <div class="flex flex-col items-center justify-between md:flex-row">
+                        <div class="mb-6 md:mb-0">
+                          <h2 class="text-xl font-bold">shortify</h2>
+                          <p class="text-gray-400">© 2024 shortify. All rights reserved.</p>
+                        </div>
+                        <div class="flex space-x-6">
+                          <a href="#" class="text-gray-400 hover:text-white">Home</a>
+                          <a href="#" class="text-gray-400 hover:text-white">About</a>
+                          <a href="#" class="text-gray-400 hover:text-white">Services</a>
+                          <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+                        </div>
+                        <div class="flex mt-6 space-x-6 md:mt-0">
+                          <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                          </a>
+                          <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                          </a>
+                          <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                
+            
+        </footer>
+
+    </div>
+    <script>
+        document.getElementById('shortenBtn').onclick = async function() {
+            const url = document.getElementById('urlInput').value;
+
+            // Check if the URL input is empty
+            if (!url) {
+                alert('Please enter a URL to shorten.');
+                return;
+            }
+
+            // Shrtlnk API endpoint
+            const apiUrl = 'https://shrtlnk.dev/api/v2/link';
+            const apiKey = 'PbPJdpwXNgqvHuJdeXfWsA9Xoqv6ZowUI5EpFYJ8usM30'; // Your API key
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'api-key': apiKey,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url }) // Request body format
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Display the shortened URL on the screen
+                    const outputDiv = document.getElementById('output');
+                    outputDiv.style.display = 'block'; // Make the output div visible
+                    outputDiv.innerHTML = `Shortened URL: <a href="${data.shrtlnk}" target="_blank">${data.shrtlnk}</a>`;
+                } else {
+                    const outputDiv = document.getElementById('output');
+                    outputDiv.style.display = 'block';
+                    outputDiv.innerHTML = `Error: ${data.message}`; // Show error message
+                }
+            } catch (error) {
+                console.error('Error connecting to the API:', error);
+                const outputDiv = document.getElementById('output');
+                outputDiv.style.display = 'block';
+                outputDiv.innerHTML = 'Error connecting to the API';
+            }
+        };
+    </script>
+</body>
+
+</html>
